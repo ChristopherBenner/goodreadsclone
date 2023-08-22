@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth import logout
 from .forms import LoginForm, SignUpForm
 
 def index(request):
@@ -17,5 +18,10 @@ def signup(request):
     return render(request, 'core/signup.html', {
         'form': form,
     })
+
+def logout_request(request):
+    logout(request)
+
+    return redirect('/')
 
 
