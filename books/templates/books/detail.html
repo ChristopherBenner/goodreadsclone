@@ -1,0 +1,36 @@
+{% extends 'core/base.html' %}
+{% block title %}{{book.name}}{% endblock %}
+
+{% block content %}
+<div class="grid grid-cols-5 gap-6">
+    <div class="col-span-3">
+        <!--Add the cover image-->
+    </div>
+    <div class="col-span-2 p-6 bg-gray-100 rounded-xl m-6">
+        <h1 class="text-3xl mb-6">{{book.name}}</h1>
+        <p class="text-gray-400"><strong>Author | </strong>{{book.author}}</p>
+        <p class="text-gray-400"><strong>Published | </strong>{{book.published_date}}</p>
+        <p class="text-gray-400"><strong>Description | </strong>{{book.description}}</p>
+    </div>
+</div>
+<h1 class="text-3xl m-6 border-b border-gray-200">Also by this Author</h1>
+<div class="grid grid-cols-3 gap-6 m-6">
+    {% if related_items %}
+    {% for book in related_items %}
+        <div>
+            <a href="{% url 'books:detail' book.id %}">
+                <div>
+                    <!--Add cover image here-->
+                    <div class="p-6 bg-amber-100 rounded-xl mb-6">
+                        <h2 class="text-2xl">{{book.name}}</h2>
+                        <p class="text-gray-400"><strong>Author | </strong>{{book.author}}</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    {% endfor %}
+    {% else %}
+        <h2 class="text-2xl">No other books by this author</h2>
+    {% endif %}
+</div>
+{% endblock %}
