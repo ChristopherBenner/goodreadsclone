@@ -33,4 +33,30 @@
         <h2 class="text-2xl">No other books by this author</h2>
     {% endif %}
 </div>
+<div class="m-6">
+    <h1 class="mb-6 text-3xl">Reviews and Ratings</h1>
+    <form method="post" action="." enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        {% if form.errors or form.non_field_errors %}
+        <div class="mb-3 p-6 bg-red-100 rounded-xl">
+            {{ field.errors }}
+            {{ form.non_field_errors}}
+        </div>
+        {% endif %}
+        <button class="px-6 py-4 mb-6 rounded-xl font-semibold bg-amber-100 hover:bg-orange-950 hover:text-white">Submit</button>
+    </form>
+    <div class="mb-6">
+        {% for comment in comments %}
+            <div class="p-6 bg-amber-100">
+                <div>
+                    <p class="mb-4"><strong>{{comment.created_by}} | {{comment.created_at}}<br></strong>{{comment.content}}</p>
+                    {% if comment.created_by == request.user %}
+                        <p><a href="{% url 'books:edit' comment.id %}">Edit</a> | <a href="{% url 'books:delete' comment.id %}">Delete</a></p>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}

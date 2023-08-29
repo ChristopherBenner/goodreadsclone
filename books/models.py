@@ -25,3 +25,11 @@ class Book(models.Model):
     def __str__(self):
         return self.name
     
+class Commment(models.Model):
+    book = models.ForeignKey(Book, related_name='comments', on_delete=models.CASCADE)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(User, related_name='user_comments', on_delete=models.CASCADE) 
+
+    def __str__(self):
+        return f"{self.book} | {self.content[0:30]}"      
