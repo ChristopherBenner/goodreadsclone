@@ -16,7 +16,7 @@
             <a href="/" class="text-xl font-semibold text-orange-950">Goodreads</a>
             <div class="space-x-6">
                 <a href="{% url 'core:index' %}" class="text-lg font-semibold text-orange-950 hover:text-white hover:bg-orange-950">Home</a>
-                <a href="#" class="text-lg font-semibold text-orange-950 hover:text-white hover:bg-orange-950">My Books</a>
+                <a href="{% url 'books:view_shelves' %}" class="text-lg font-semibold text-orange-950 hover:text-white hover:bg-orange-950">My Books</a>
                 <a href="#" class="text-lg font-semibold text-orange-950 hover:text-white hover:bg-orange-950">Browse</a>
                 <a href="#" class="text-lg font-semibold text-orange-950 hover:text-white hover:bg-orange-950">Community</a>
             </div>

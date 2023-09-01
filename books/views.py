@@ -68,3 +68,15 @@ def delete_comment(request, pk):
     comment.delete()
 
     return redirect('books:detail', pk=comment.book.id)
+
+@login_required
+def view_shelves(request):
+    want_to_read = BookShelf.objects.filter(shelved_by = request.user).filter(shelf = 'want to read')
+    currently_reading = BookShelf.objects.filter(shelved_by = request.user).filter(shelf = 'currently reading')
+    previously_read = BookShelf.objects.filter(shelved_by = request.user).filter(shelf = 'read')
+
+    return render(request, 'books/my_books.html',{
+        'want_to_read': want_to_read,
+        'currently_reading': currently_reading,
+        'previously_read': previously_read,
+    })

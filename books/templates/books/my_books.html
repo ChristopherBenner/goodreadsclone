@@ -1,0 +1,48 @@
+{% extends 'core/base.html' %}
+{% block title %}My Books{% endblock title %}
+
+{% block content %}
+    <div class="m-6 border-b border-gray-200">
+        <h1>Read</h1>
+        {% if previously_read %}
+            {% for book in previously_read %}
+            <a href="{% url 'books:detail' book.book.id %}">
+                <div class="p-6 bg-amber-100 rounded-xl m-3 w-3/6">
+                    <p>{{ book.book.name }} | {{book.book.author }} | {{book.shelved_on}}
+                </div>
+            </a>
+            {% endfor %}
+        {% else %}
+            <p class="text-gray-400">No books yet. Add some to get started</p>
+        {% endif %}
+    </div>
+    <div class="m-6 border-b border-gray-200">
+        <h1>Currently Reading</h1>
+        {% if currently_reading %}
+            {% for book in currently_reading %}
+            <a href="{% url 'books:detail' book.book.id %}">
+                <div class="p-6 bg-amber-100 rounded-xl m-3 w-3/6">
+                    <p>{{ book.book.name }} | {{book.book.author }} | {{book.shelved_on}}
+                </div>
+            </a>
+            {% endfor %}
+        {% else %}
+        <p class="text-gray-400">No books yet. Add some to get started</p>
+        {% endif %}
+    </div>
+    <div class="m-6 border-b border-gray-200">
+        <h1>Want To Read</h1>
+        {% if want_to_read %}
+            {% for book in want_to_read %}
+            <a href="{% url 'books:detail' book.book.id %}">
+                <div class="p-6 bg-amber-100 rounded-xl m-3 w-3/6">
+                    <p>{{ book.book.name }} | {{book.book.author }} | {{book.shelved_on}}
+                </div>
+            </a>
+            {% endfor %}
+        {% else %}
+        <p class="text-gray-400">No books yet. Add some to get started</p>
+        {% endif %}
+    </div>
+
+{% endblock content %}
