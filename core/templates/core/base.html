@@ -1,9 +1,13 @@
 <!DOCTYPE html>
+{% load static %}
+{% load ratings %}
 <html>
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+        <link rel="stylesheet" href="{% static 'star-ratings/css/star-ratings.css' %}">
+        <script type="text/javascript" src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>
         <script src="https://cdn.tailwindcss.com"></script>
         <title>{% block title %}{% endblock %} | Books</title>
     </head>

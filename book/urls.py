@@ -21,4 +21,5 @@ urlpatterns = [
     path("", include('core.urls')),
     path("books/", include('books.urls')),
     path("admin/", admin.site.urls),
+    path("ratings/", include('star_ratings.urls', namespace='ratings')),
 ]

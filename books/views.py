@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Book, Category, Commment
-from .forms import CommentForm
+from .models import Book, Category, Commment, BookShelf
+from .forms import CommentForm, ShelvingForm
 
 @login_required
 def detail(request, pk):
@@ -9,9 +9,12 @@ def detail(request, pk):
     related_items = Book.objects.filter(author = book.author).exclude(pk=pk)[0:3]
     comments = Commment.objects.filter(book = book)
     # comments = Commment.objects.all()
-
+    # shelves = BookShelf.objects.filter(shelved_by = request.user).filter(book = book)
+    # figure out querset with _meta
+    shelves = BookShelf.objects.filter(shelved_by = request.user).filter(book = book).first()
     if request.method == 'POST':
         form = CommentForm(request.POST)
+        shelf_form = ShelvingForm(request.POST, instance=shelves)
 
         if form.is_valid():
             comment = form.save(commit=False)
@@ -21,14 +24,25 @@ def detail(request, pk):
 
             return redirect("books:detail", pk=pk)
 
+        if shelf_form.is_valid():
+            # If a book has already been shelved, don't continue adding shelves
+            shelf = shelf_form.save(commit=False)
+            shelf.shelved_by = request.user
+            shelf.book = book
+            shelf.save()
+
+            return redirect("books:detail", pk=pk)
     else:
         form = CommentForm()
+        shelf_form = ShelvingForm(instance=shelves)
 
     return render(request, 'books/detail.html', {
         'book': book,
         'related_items': related_items,
         'form': form,
-        'comments': comments
+        'shelf_form': shelf_form,
+        'comments': comments,
+        'shelves': shelves,
     })
 
 @login_required

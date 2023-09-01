@@ -33,3 +33,27 @@ class Commment(models.Model):
 
     def __str__(self):
         return f"{self.book} | {self.content[0:30]}"      
+
+
+'''class Shelf(models.Model):
+    name = models.CharField(max_length=255)
+
+    class Meta:
+        ordering = ('name',)
+        verbose_name_plural = 'Shelves'
+
+    def __str__(self) -> str :
+        return self.name'''
+
+class BookShelf(models.Model):
+    book = models.ForeignKey(Book, related_name='shelves', on_delete=models.CASCADE)
+    shelf = models.CharField(max_length=255)
+    shelved_by = models.ForeignKey(User, related_name='shelves', on_delete=models.CASCADE)
+    shelved_on = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ('shelved_on',)
+        verbose_name_plural = 'Book Shelves'
+
+    def __str__(self):
+        return f"{self.book} | {self.shelf}"

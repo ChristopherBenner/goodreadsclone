@@ -1,5 +1,5 @@
 from django import forms
-from .models import Commment
+from .models import Commment, BookShelf
 
 class CommentForm(forms.ModelForm):
     class Meta:
@@ -10,3 +10,16 @@ class CommentForm(forms.ModelForm):
                 'class': 'w-full py-4 px-6 rounded-xl border',
             })
         }
+
+SHELF_CHOICES = [
+    ('want to read', 'Want to Read'),
+    ('currently reading', 'Currently Reading'),
+    ('read', 'Read'),
+]
+
+class ShelvingForm(forms.ModelForm):
+    
+    shelf = forms.CharField(widget=forms.Select(choices=SHELF_CHOICES))
+    class Meta:
+        model = BookShelf
+        fields = ('shelf',)

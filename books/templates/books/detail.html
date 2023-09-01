@@ -1,6 +1,6 @@
 {% extends 'core/base.html' %}
 {% block title %}{{book.name}}{% endblock %}
-
+{% load ratings %}
 {% block content %}
 <div class="grid grid-cols-5 gap-6">
     <div class="col-span-3">
@@ -11,7 +11,17 @@
         <p class="text-gray-400"><strong>Author | </strong>{{book.author}}</p>
         <p class="text-gray-400"><strong>Published | </strong>{{book.published_date}}</p>
         <p class="text-gray-400"><strong>Description | </strong>{{book.description}}</p>
+        {% ratings book %}
     </div>
+    <form method="post" action="." class="m-3">
+        {% csrf_token %}
+        {{ shelf_form.as_p }}
+        {% if shelves %}
+            <button class="bg-amber-100 rounded-xl p-6 m-3">Change Shelf</button>
+        {% else %}
+            <button class="bg-orange-950 text-white rounded-xl p-6 m-3">Add to Shelves</button>
+        {% endif %}
+    </form>
 </div>
 <h1 class="text-3xl m-6 border-b border-gray-200">Also by this Author</h1>
 <div class="grid grid-cols-3 gap-6 m-6">
@@ -24,6 +34,9 @@
                     <div class="p-6 bg-amber-100 rounded-xl mb-6">
                         <h2 class="text-2xl">{{book.name}}</h2>
                         <p class="text-gray-400"><strong>Author | </strong>{{book.author}}</p>
+                        {% ratings book icon_height=10 icon_width=10 %}
+                        {{rating.average}}
+
                     </div>
                 </div>
             </a>
