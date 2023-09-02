@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
+from django.db.models import Q
 from .models import Book, Category, Commment, BookShelf
 from .forms import CommentForm, ShelvingForm
 
@@ -80,3 +81,15 @@ def view_shelves(request):
         'currently_reading': currently_reading,
         'previously_read': previously_read,
     })
+
+def view_books(request):
+    books = Book.objects.all()
+    query = request.GET.get('query','')
+
+    if query:
+        books = books.filter(Q(name__icontains = query)| Q(author__username__icontains = query))
+
+    return render(request, 'books/books.html', {
+        'books': books,
+        'query': query,
+    })   
