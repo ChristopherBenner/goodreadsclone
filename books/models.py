@@ -20,6 +20,7 @@ class Book(models.Model):
     # Author shouldn't be a foreign key as it limits the authors of books to only
     # Those who are site users -> still good to use foreign key for recipes (probably)
     author = models.ForeignKey(User, related_name='books', on_delete=models.CASCADE)
+    pages = models.IntegerField(null=True, blank=True)
     published_date = models.DateField(auto_now_add=False)
 
     def __str__(self):

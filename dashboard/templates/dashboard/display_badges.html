@@ -1,0 +1,16 @@
+{% extends 'core/base.html' %}
+{% block title %}Dashboard{% endblock title %}
+
+{% block content %}
+    <div class="m-6">
+    {% for badge in badges %}
+        {% if badge in list_of_badges %}   
+            {% if badge in badges_to_display %}
+                <img src="{{badge.awarded_image.url}}" class="inline">
+            {% endif %}
+        {% else %}
+        <img src="{{badge.not_awarded_image.url}}" class="inline">
+        {% endif %}
+    {% endfor %}
+    </div>
+{% endblock content %}

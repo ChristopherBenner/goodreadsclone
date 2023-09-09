@@ -18,7 +18,7 @@
                 <a href="{% url 'core:index' %}" class="text-lg font-semibold text-orange-950 hover:text-white hover:bg-orange-950">Home</a>
                 <a href="{% url 'books:view_shelves' %}" class="text-lg font-semibold text-orange-950 hover:text-white hover:bg-orange-950">My Books</a>
                 <a href="{% url 'books:view_books' %}" class="text-lg font-semibold text-orange-950 hover:text-white hover:bg-orange-950">Browse</a>
-                <a href="#" class="text-lg font-semibold text-orange-950 hover:text-white hover:bg-orange-950">Community</a>
+                <a href="{% url 'dashboard:display_badges' %}" class="text-lg font-semibold text-orange-950 hover:text-white hover:bg-orange-950">Badges : {{num_badges}}</a>
             </div>
             <div>
                 <!--Add search bar here-->

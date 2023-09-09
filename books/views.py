@@ -3,16 +3,18 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
 from .models import Book, Category, Commment, BookShelf
 from .forms import CommentForm, ShelvingForm
-
+from dashboard.models import Dashboard, BadgeCategory
+from dashboard.functions import award_possible_badge, get_pages_read
 @login_required
 def detail(request, pk):
     book = get_object_or_404(Book, pk=pk)
     related_items = Book.objects.filter(author = book.author).exclude(pk=pk)[0:3]
     comments = Commment.objects.filter(book = book)
-    # comments = Commment.objects.all()
-    # shelves = BookShelf.objects.filter(shelved_by = request.user).filter(book = book)
-    # figure out querset with _meta
+    user_dashboard = Dashboard.objects.filter(user = request.user).first()
     shelves = BookShelf.objects.filter(shelved_by = request.user).filter(book = book).first()
+    category = BadgeCategory.objects.filter(name = 'Pages Read').first()
+    pages_read = get_pages_read(user_dashboard)
+    award_possible_badge(category, user_dashboard, pages_read)
     if request.method == 'POST':
         form = CommentForm(request.POST)
         shelf_form = ShelvingForm(request.POST, instance=shelves)
@@ -27,11 +29,14 @@ def detail(request, pk):
 
         if shelf_form.is_valid():
             # If a book has already been shelved, don't continue adding shelves
+            saved_shelf = shelf_form.cleaned_data['shelf']
             shelf = shelf_form.save(commit=False)
             shelf.shelved_by = request.user
             shelf.book = book
+            
             shelf.save()
-
+            
+            # If the book hasn't already been added, add the number of pages to the dashboard number of pages read
             return redirect("books:detail", pk=pk)
     else:
         form = CommentForm()
@@ -44,6 +49,7 @@ def detail(request, pk):
         'shelf_form': shelf_form,
         'comments': comments,
         'shelves': shelves,
+        'pages_read': pages_read,
     })
 
 @login_required
